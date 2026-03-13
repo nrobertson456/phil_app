@@ -5,7 +5,12 @@
  * Step 2: Copy .env.example to .env and set JWT_SECRET (and OPENAI_API_KEY if you want AI)
  * Step 3: Run "npm run dev" or "npm start"
  */
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.join(__dirname, '.env') });
 import express from 'express';
 import cors from 'cors';
 import { initDb } from './db/initDb.js';

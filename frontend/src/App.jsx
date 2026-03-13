@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthContext';
 import CornerSparkles from './components/CornerSparkles';
+import Fairy from './components/Fairy';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -31,9 +32,14 @@ function AppRoutes() {
 }
 
 export default function App() {
+  const [showFairy, setShowFairy] = useState(true);
+
   return (
     <AuthProvider>
       <CornerSparkles />
+      {showFairy && (
+        <Fairy onComplete={() => setShowFairy(false)} />
+      )}
       <AppRoutes />
     </AuthProvider>
   );

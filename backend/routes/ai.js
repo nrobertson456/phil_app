@@ -8,13 +8,12 @@ import { requireAuth } from '../middleware/auth.js';
 const router = express.Router();
 router.use(requireAuth);
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
 router.post('/suggest', async (req, res) => {
   const { context, type } = req.body || {};
   // type: 'plot', 'character', 'song', 'dialogue', etc.
+  const openaiKey = process.env.OPENAI_API_KEY;
 
-  if (!OPENAI_API_KEY) {
+  if (!openaiKey) {
     return res.json({
       suggestion: "Add your OpenAI API key in the backend .env file (OPENAI_API_KEY) to get AI suggestions. Until then, try: jot down the last thing that happened, then ask 'What would make things worse for the hero?' or 'What does the villain want in this moment?'",
       fromAi: false,
@@ -27,7 +26,7 @@ router.post('/suggest', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        Authorization: `Bearer ${openaiKey}`,
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',

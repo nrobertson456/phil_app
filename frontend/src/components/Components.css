@@ -254,3 +254,93 @@
   }
 }
 
+/* Fairy that flies across once after curtains open */
+.fairy-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 64px;
+  height: 80px;
+  margin-left: -32px;
+  margin-top: -40px;
+  pointer-events: none;
+  z-index: 10;
+  animation: fairy-fly 5s ease-in-out 3s forwards;
+}
+
+.fairy-figure {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 70px;
+  filter: drop-shadow(0 0 8px rgba(255, 236, 179, 0.5)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+}
+
+.fairy-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.fairy-trail {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 20px;
+  margin-right: 4px;
+}
+
+.fairy-trail-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 236, 179, 0.95),
+    rgba(242, 199, 107, 0.8) 50%,
+    rgba(199, 156, 74, 0.4)
+  );
+  box-shadow: 0 0 6px rgba(242, 199, 107, 0.7);
+  top: 50%;
+  left: calc(var(--trail-index) * 100% / var(--trail-total));
+  transform: translate(-50%, -50%) scale(calc(1 - var(--trail-index) * 0.06));
+  opacity: calc(1 - var(--trail-index) * 0.09);
+}
+
+@keyframes fairy-fly {
+  0% {
+    left: -8%;
+    top: 22%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  22% {
+    left: 22%;
+    top: 38%;
+  }
+  45% {
+    left: 48%;
+    top: 48%;
+  }
+  72% {
+    left: 78%;
+    top: 36%;
+  }
+  92% {
+    left: 108%;
+    top: 28%;
+  }
+  100% {
+    left: 118%;
+    top: 26%;
+    opacity: 0;
+  }
+}
+
