@@ -1,21 +1,28 @@
 import React, { useMemo } from 'react';
 
-const STAR_COUNT = 20;
+const SPARKLE_COUNT = 24;
 const CORNERS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
 
 function randomInRange(min, max) {
   return min + Math.random() * (max - min);
 }
 
-function createStars() {
-  return Array.from({ length: STAR_COUNT }, (_, index) => {
+function createSparkles() {
+  return Array.from({ length: SPARKLE_COUNT }, (_, index) => {
     const corner = CORNERS[index % CORNERS.length];
-    const baseOffset = randomInRange(0, 14); // how far in from each edge (0–14%)
-    const secondaryOffset = randomInRange(0, 18);
+    const baseOffset = randomInRange(0, 22);
+    const secondaryOffset = randomInRange(0, 24);
+
+    const size = randomInRange(10, 22);
+    const delay = randomInRange(0, 8);
+    const duration = randomInRange(5, 11);
+    const rotateDuration = randomInRange(12, 24);
 
     const style = {
-      animationDelay: `${randomInRange(0, 6).toFixed(2)}s`,
-      animationDuration: `${randomInRange(3.5, 7.5).toFixed(2)}s`,
+      '--sparkle-size': `${size}px`,
+      '--sparkle-delay': `${delay.toFixed(2)}s`,
+      '--sparkle-duration': `${duration.toFixed(2)}s`,
+      '--sparkle-rotate-duration': `${rotateDuration.toFixed(1)}s`,
     };
 
     switch (corner) {
@@ -38,24 +45,24 @@ function createStars() {
         break;
     }
 
-    // Slight size variation per star
-    const size = randomInRange(5, 9);
-    style.width = `${size}px`;
-    style.height = `${size}px`;
-
     return { id: index, style };
   });
 }
 
 export default function CornerSparkles() {
-  const stars = useMemo(createStars, []);
+  const sparkles = useMemo(createSparkles, []);
 
   return (
     <div className="sparkle-layer" aria-hidden="true">
-      {stars.map((star) => (
-        <div key={star.id} className="sparkle-star" style={star.style} />
+      {sparkles.map((sparkle) => (
+        <div
+          key={sparkle.id}
+          className="sparkle-cross"
+          style={sparkle.style}
+        >
+          <span className="sparkle-cross-inner" />
+        </div>
       ))}
     </div>
   );
 }
-
