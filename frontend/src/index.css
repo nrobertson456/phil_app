@@ -1,0 +1,198 @@
+/* Anastasia-inspired theme: deep navy, rich red, shimmering gold */
+:root {
+  /* Core palette */
+  --bg-dark: #05091a;            /* deep midnight navy */
+  --bg-dark-alt: #0b1430;        /* slightly lighter navy for gradients */
+  --bg-card: #11142a;            /* card/nav background */
+  --bg-input: #181b33;           /* inputs and insets */
+
+  --accent-gold: #f2c76b;        /* warm, magical gold */
+  --accent-gold-dim: #c79c4a;    /* softer gold for subheadings */
+  --accent-gold-bright: #ffe4a3; /* brightest shimmer gold */
+
+  --accent-red: #7b1f32;         /* rich Anastasia-style red */
+
+  --text: #f5f3ff;
+  --text-muted: #a9a7c0;
+  --border: #2a2f57;
+  --danger: #d46a7c;
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top center, rgba(242, 199, 107, 0.14), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(123, 31, 50, 0.25), transparent 55%),
+    linear-gradient(160deg, var(--bg-dark) 0%, var(--bg-dark-alt) 60%, #050716 100%);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1; /* sit above stage curtains */
+  max-width: calc(100% - 240px); /* leave room for curtains on both sides */
+  margin: 0 auto;
+}
+
+/* Luxurious red velvet theatre curtains framing the stage */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 120px; /* final resting width after animation */
+  pointer-events: none;
+  z-index: 4; /* above app content but non-interactive */
+  background-image:
+    /* subtle vertical velvet folds with gentle curves */
+    linear-gradient(
+      90deg,
+      #3b0c16 0%,
+      #7b1f32 14%,
+      #3b0c16 28%,
+      #7b1f32 42%,
+      #3b0c16 60%,
+      #7b1f32 78%,
+      #3b0c16 100%
+    ),
+    /* golden rope tying the curtain back at mid-height */
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 38%,
+      rgba(242, 199, 107, 0.0) 40%,
+      rgba(242, 199, 107, 0.95) 41%,
+      #c79c4a 43%,
+      rgba(242, 199, 107, 0.95) 45%,
+      rgba(242, 199, 107, 0.0) 47%,
+      transparent 100%
+    ),
+    /* tassel glow */
+    radial-gradient(circle at 68% 50%, rgba(0, 0, 0, 0.7) 0, transparent 55%),
+    radial-gradient(circle at 70% 50%, #fce7a9 0, #f2c76b 32%, #c79c4a 55%, transparent 62%),
+    /* soft shadow edge toward the center of the stage */
+    radial-gradient(circle at 100% 50%, rgba(0, 0, 0, 0.65), transparent 55%);
+  /* first layer (velvet folds) stretches to always fill the curtain panel */
+  background-size: 100% 100%, 4px 100%, 80px 90%, 90px 90%, 140px 100%;
+  background-repeat: no-repeat;
+  box-shadow:
+    0 0 30px rgba(0, 0, 0, 0.85),
+    inset -8px 0 18px rgba(0, 0, 0, 0.65);
+  /* Dramatic opening animation on first load */
+  animation-duration: 2.8s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+body::before {
+  left: 0;
+  transform-origin: left center;
+  animation-name: curtain-open-left;
+}
+
+body::after {
+  right: 0;
+  transform-origin: right center;
+  background-image:
+    linear-gradient(
+      270deg,
+      #3b0c16 0%,
+      #7b1f32 14%,
+      #3b0c16 28%,
+      #7b1f32 42%,
+      #3b0c16 60%,
+      #7b1f32 78%,
+      #3b0c16 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 38%,
+      rgba(242, 199, 107, 0.0) 40%,
+      rgba(242, 199, 107, 0.95) 41%,
+      #c79c4a 43%,
+      rgba(242, 199, 107, 0.95) 45%,
+      rgba(242, 199, 107, 0.0) 47%,
+      transparent 100%
+    ),
+    radial-gradient(circle at 32% 50%, rgba(0, 0, 0, 0.7) 0, transparent 55%),
+    radial-gradient(circle at 30% 50%, #fce7a9 0, #f2c76b 32%, #c79c4a 55%, transparent 62%),
+    radial-gradient(circle at 0% 50%, rgba(0, 0, 0, 0.65), transparent 55%);
+  animation-name: curtain-open-right;
+}
+
+@keyframes curtain-open-left {
+  0% {
+    left: 0;
+    width: 52vw;    /* fully cover and slightly overlap center */
+  }
+  70% {
+    left: 0;
+    width: 130px;   /* overshoot slightly for drama */
+  }
+  100% {
+    left: 0;
+    width: 120px;   /* final resting width */
+  }
+}
+
+@keyframes curtain-open-right {
+  0% {
+    right: 0;
+    width: 52vw;    /* fully cover and slightly overlap center */
+  }
+  70% {
+    right: 0;
+    width: 130px;   /* overshoot slightly for drama */
+  }
+  100% {
+    right: 0;
+    width: 120px;   /* final resting width */
+  }
+}
+
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+h1 { font-size: 1.75rem; color: var(--accent-gold); }
+h2 { font-size: 1.35rem; color: var(--accent-gold-dim); }
+h3 { font-size: 1.1rem; }
+
+a {
+  color: var(--accent-gold-bright);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+input, textarea {
+  font-family: var(--font-body);
+}
+
+/* Utility */
+.gold { color: var(--accent-gold); }
+.muted { color: var(--text-muted); }
