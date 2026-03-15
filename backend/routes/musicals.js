@@ -56,15 +56,19 @@ router.put('/:id', (req, res) => {
   res.json({ ok: true });
 });
 
-// Delete musical (must belong to user)
+// Delete musical (must belong to user). Delete related rows first to satisfy foreign keys.
 router.delete('/:id', (req, res) => {
   const db = getDb();
-  const existing = db.prepare('SELECT id FROM musicals WHERE id = ? AND user_id = ?').get(req.params.id, req.userId);
+  const id = req.params.id;
+  const existing = db.prepare('SELECT id FROM musicals WHERE id = ? AND user_id = ?').get(id, req.userId);
   if (!existing) {
     db.close();
     return res.status(404).json({ error: 'Musical not found' });
   }
-  db.prepare('DELETE FROM musicals WHERE id = ?').run(req.params.id);
+  db.prepare('DELETE FROM script_sections WHERE musical_id = ?').run(id);
+  db.prepare('DELETE FROM songs WHERE musical_id = ?').run(id);
+  db.prepare('DELETE FROM characters WHERE musical_id = ?').run(id);
+  db.prepare('DELETE FROM musicals WHERE id = ?').run(id);
   db.close();
   res.json({ ok: true });
 });
