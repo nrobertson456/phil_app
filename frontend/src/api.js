@@ -87,6 +87,8 @@ export async function updateScriptSection(id, data) {
 }
 
 // AI
-export async function getAISuggestion(context, type) {
-  return api('/ai/suggest', { method: 'POST', body: JSON.stringify({ context, type }) });
+export async function getAISuggestion(context, type, musicalContext = null) {
+  const body = { context, type };
+  if (musicalContext && typeof musicalContext === 'object') body.musicalContext = musicalContext;
+  return api('/ai/suggest', { method: 'POST', body: JSON.stringify(body) });
 }

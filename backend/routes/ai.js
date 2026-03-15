@@ -9,8 +9,9 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.post('/suggest', async (req, res) => {
-  const { context, type } = req.body || {};
+  const { context, type, musicalContext } = req.body || {};
   // type: 'plot', 'character', 'song', 'dialogue', etc.
+  // musicalContext: optional { title, premise, plot } for show-specific advice
   const openaiKey = process.env.OPENAI_API_KEY;
 
   if (!openaiKey) {
@@ -20,7 +21,7 @@ router.post('/suggest', async (req, res) => {
     });
   }
 
-  const prompt = buildPrompt(context, type);
+  const prompt = buildPrompt(context, type, musicalContext);
   try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -52,8 +53,15 @@ router.post('/suggest', async (req, res) => {
   }
 });
 
-function buildPrompt(context, type) {
-  const base = context && typeof context === 'string' ? context : 'I\'m working on a new musical.';
+function buildPrompt(context, type, musicalContext) {
+  let base = context && typeof context === 'string' ? context : 'I\'m working on a new musical.';
+  if (musicalContext && typeof musicalContext === 'object' && (musicalContext.title || musicalContext.premise || musicalContext.plot)) {
+    const parts = ['I\'m working on this musical:'];
+    if (musicalContext.title) parts.push(`Title: ${musicalContext.title}`);
+    if (musicalContext.premise) parts.push(`Premise: ${musicalContext.premise}`);
+    if (musicalContext.plot) parts.push(`Plot: ${musicalContext.plot}`);
+    base = parts.join('\n') + '\n\n' + base;
+  }
   const typePrompt = {
     plot: 'Suggest the next beat or twist in the plot. Be brief.',
     character: 'Suggest a character trait, motivation, or line that would deepen this character. Be brief.',

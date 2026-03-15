@@ -15,12 +15,17 @@ export default function AIAssistant({ musicals = [], musicalId, onSelectMusical 
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const currentMusical = musicalId ? musicals.find((m) => m.id === musicalId) : null;
+
   const ask = async (e) => {
     e.preventDefault();
     setLoading(true);
     setSuggestion('');
     try {
-      const { suggestion: text } = await getAISuggestion(context, type);
+      const musicalContext = currentMusical
+        ? { title: currentMusical.title || '', premise: currentMusical.premise || '', plot: currentMusical.plot || '' }
+        : null;
+      const { suggestion: text } = await getAISuggestion(context, type, musicalContext);
       setSuggestion(text);
     } catch (err) {
       setSuggestion('Could not get a suggestion. Check that the backend is running and, if you use AI, that OPENAI_API_KEY is set.');
@@ -29,39 +34,46 @@ export default function AIAssistant({ musicals = [], musicalId, onSelectMusical 
     }
   };
 
-  if (musicals.length === 0) return <div className="card">Create a musical in Story first.</div>;
-  if (!musicalId) {
-    return (
-      <div className="ai-assistant">
-        <h1 className="page-title gold">AI Writing Assistant</h1>
-        <p className="muted" style={{ marginBottom: '1rem' }}>Stuck? Describe where you're at and get a short idea to unstick you.</p>
-        <div className="card">
-          <p className="muted" style={{ marginBottom: '1rem' }}>Select a musical to work on.</p>
-          <MusicalPicker musicals={musicals} value={musicalId} onChange={onSelectMusical} />
-        </div>
-      </div>
-    );
-  }
+  const isGeneralMode = !musicalId;
 
   return (
     <div className="ai-assistant">
       <h1 className="page-title gold">AI Writing Assistant</h1>
-      <p className="muted" style={{ marginBottom: '1rem' }}>Stuck? Describe where you’re at and get a short idea to unstick you.</p>
+      {isGeneralMode ? (
+        <p className="muted" style={{ marginBottom: '1rem' }}>
+          General brainstorming mode — get Broadway writing inspiration and ideas. No musical selected yet.
+        </p>
+      ) : (
+        <p className="muted" style={{ marginBottom: '1rem' }}>
+          Getting advice for <strong>{currentMusical?.title || 'Untitled Musical'}</strong>. Suggestions will be tailored to your show.
+        </p>
+      )}
 
-      <div className="musical-picker-wrap">
-        <MusicalPicker musicals={musicals} value={musicalId} onChange={onSelectMusical} />
-      </div>
+      {musicals.length > 0 && (
+        <div className="musical-picker-wrap">
+          <MusicalPicker
+            musicals={musicals}
+            value={musicalId}
+            onChange={onSelectMusical}
+            label={isGeneralMode ? 'Or pick a musical for show-specific advice' : 'Work on musical'}
+          />
+        </div>
+      )}
 
       <div className="card">
-        <h2>What do you need help with?</h2>
+        <h2>{isGeneralMode ? 'What do you want to explore?' : 'What do you need help with?'}</h2>
         <form onSubmit={ask}>
           <label>
-            Context (what’s the scene, who’s there, what’s the problem?)
+            {isGeneralMode
+              ? 'Describe a scenario, theme, or question (or leave blank for a random spark).'
+              : 'Context (what\'s the scene, who\'s there, what\'s the problem?)'}
           </label>
           <textarea
             value={context}
             onChange={(e) => setContext(e.target.value)}
-            placeholder="e.g. Act 2. The hero just discovered the villain is her father. She’s alone on stage. I need a reaction that feels big but not melodramatic."
+            placeholder={isGeneralMode
+              ? "e.g. A villain who thinks they're the hero, or: I want to write a big Act 1 closing number but don't know what it should be about."
+              : "e.g. Act 2. The hero just discovered the villain is her father. She's alone on stage. I need a reaction that feels big but not melodramatic."}
             rows={4}
           />
           <label>Suggestion type</label>
