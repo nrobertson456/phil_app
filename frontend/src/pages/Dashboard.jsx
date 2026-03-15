@@ -81,10 +81,10 @@ export default function Dashboard() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<StoryBuilder musicals={musicals} currentMusicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} onMusicalUpdate={() => getMusicals().then(setMusicals)} />} />
-          <Route path="/characters" element={<CharacterCreator musicalId={currentMusicalId} />} />
-          <Route path="/songs" element={<SongPlanner musicalId={currentMusicalId} />} />
-          <Route path="/script" element={<ScriptSection musicalId={currentMusicalId} />} />
-          <Route path="/assistant" element={<AIAssistant musicalId={currentMusicalId} />} />
+          <Route path="/characters" element={<CharacterCreator musicals={musicals} musicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} />} />
+          <Route path="/songs" element={<SongPlanner musicals={musicals} musicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} />} />
+          <Route path="/script" element={<ScriptSection musicals={musicals} musicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} />} />
+          <Route path="/assistant" element={<AIAssistant musicals={musicals} musicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} />} />
         </Routes>
       </main>
     </div>

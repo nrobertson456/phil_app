@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getAISuggestion } from '../api';
+import MusicalPicker from './MusicalPicker';
 
 const SUGGEST_TYPES = [
   { value: 'plot', label: 'Plot / next beat' },
@@ -8,7 +9,7 @@ const SUGGEST_TYPES = [
   { value: 'dialogue', label: 'Dialogue / line' },
 ];
 
-export default function AIAssistant({ musicalId }) {
+export default function AIAssistant({ musicals = [], musicalId, onSelectMusical }) {
   const [context, setContext] = useState('');
   const [type, setType] = useState('plot');
   const [suggestion, setSuggestion] = useState('');
@@ -28,10 +29,28 @@ export default function AIAssistant({ musicalId }) {
     }
   };
 
+  if (musicals.length === 0) return <div className="card">Create a musical in Story first.</div>;
+  if (!musicalId) {
+    return (
+      <div className="ai-assistant">
+        <h1 className="page-title gold">AI Writing Assistant</h1>
+        <p className="muted" style={{ marginBottom: '1rem' }}>Stuck? Describe where you're at and get a short idea to unstick you.</p>
+        <div className="card">
+          <p className="muted" style={{ marginBottom: '1rem' }}>Select a musical to work on.</p>
+          <MusicalPicker musicals={musicals} value={musicalId} onChange={onSelectMusical} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="ai-assistant">
       <h1 className="page-title gold">AI Writing Assistant</h1>
-      <p className="muted" style={{ marginBottom: '1.5rem' }}>Stuck? Describe where you’re at and get a short idea to unstick you.</p>
+      <p className="muted" style={{ marginBottom: '1rem' }}>Stuck? Describe where you’re at and get a short idea to unstick you.</p>
+
+      <div className="musical-picker-wrap">
+        <MusicalPicker musicals={musicals} value={musicalId} onChange={onSelectMusical} />
+      </div>
 
       <div className="card">
         <h2>What do you need help with?</h2>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getCharacters, createCharacter, updateCharacter, deleteCharacter } from '../api';
+import MusicalPicker from './MusicalPicker';
 
-export default function CharacterCreator({ musicalId }) {
+export default function CharacterCreator({ musicals = [], musicalId, onSelectMusical }) {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
@@ -10,7 +11,11 @@ export default function CharacterCreator({ musicalId }) {
   const [newRole, setNewRole] = useState('');
 
   useEffect(() => {
-    if (!musicalId) return;
+    if (!musicalId) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     getCharacters(musicalId).then(setCharacters).finally(() => setLoading(false));
   }, [musicalId]);
 
@@ -54,13 +59,28 @@ export default function CharacterCreator({ musicalId }) {
     }
   };
 
-  if (!musicalId) return <div className="card">Create a musical in Story first.</div>;
+  if (musicals.length === 0) return <div className="card">Create a musical in Story first.</div>;
+  if (!musicalId) {
+    return (
+      <div className="character-creator">
+        <h1 className="page-title gold">Character Creator</h1>
+        <p className="muted" style={{ marginBottom: '1.5rem' }}>Add and develop the characters in your musical.</p>
+        <div className="card">
+          <p className="muted" style={{ marginBottom: '1rem' }}>Select a musical to work on.</p>
+          <MusicalPicker musicals={musicals} value={musicalId} onChange={onSelectMusical} />
+        </div>
+      </div>
+    );
+  }
   if (loading) return <div className="card">Loading characters…</div>;
 
   return (
     <div className="character-creator">
       <h1 className="page-title gold">Character Creator</h1>
-      <p className="muted" style={{ marginBottom: '1.5rem' }}>Add and develop the characters in your musical.</p>
+      <p className="muted" style={{ marginBottom: '1rem' }}>Add and develop the characters in your musical.</p>
+      <div className="musical-picker-wrap">
+        <MusicalPicker musicals={musicals} value={musicalId} onChange={onSelectMusical} />
+      </div>
 
       <div className="card">
         <h2>Add character</h2>

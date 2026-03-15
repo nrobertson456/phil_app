@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getSongs, createSong, updateSong, deleteSong } from '../api';
+import MusicalPicker from './MusicalPicker';
 
-export default function SongPlanner({ musicalId }) {
+export default function SongPlanner({ musicals = [], musicalId, onSelectMusical }) {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newTitle, setNewTitle] = useState('');
@@ -10,7 +11,11 @@ export default function SongPlanner({ musicalId }) {
   const [newNotes, setNewNotes] = useState('');
 
   useEffect(() => {
-    if (!musicalId) return;
+    if (!musicalId) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     getSongs(musicalId).then(setSongs).finally(() => setLoading(false));
   }, [musicalId]);
 
@@ -54,13 +59,28 @@ export default function SongPlanner({ musicalId }) {
     }
   };
 
-  if (!musicalId) return <div className="card">Create a musical in Story first.</div>;
+  if (musicals.length === 0) return <div className="card">Create a musical in Story first.</div>;
+  if (!musicalId) {
+    return (
+      <div className="song-planner">
+        <h1 className="page-title gold">Song Planner</h1>
+        <p className="muted" style={{ marginBottom: '1.5rem' }}>Plan where each song sits in your show (act, scene, notes).</p>
+        <div className="card">
+          <p className="muted" style={{ marginBottom: '1rem' }}>Select a musical to work on.</p>
+          <MusicalPicker musicals={musicals} value={musicalId} onChange={onSelectMusical} />
+        </div>
+      </div>
+    );
+  }
   if (loading) return <div className="card">Loading songs…</div>;
 
   return (
     <div className="song-planner">
       <h1 className="page-title gold">Song Planner</h1>
-      <p className="muted" style={{ marginBottom: '1.5rem' }}>Plan where each song sits in your show (act, scene, notes).</p>
+      <p className="muted" style={{ marginBottom: '1rem' }}>Plan where each song sits in your show (act, scene, notes).</p>
+      <div className="musical-picker-wrap">
+        <MusicalPicker musicals={musicals} value={musicalId} onChange={onSelectMusical} />
+      </div>
 
       <div className="card">
         <h2>Add song</h2>
