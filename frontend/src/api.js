@@ -43,6 +43,9 @@ export async function createMusical(data) {
 export async function updateMusical(id, data) {
   return api(`/musicals/${id}`, { method: 'PUT', body: JSON.stringify(data) });
 }
+export async function deleteMusical(id) {
+  return api(`/musicals/${id}`, { method: 'DELETE' });
+}
 
 // Characters
 export async function getCharacters(musicalId) {

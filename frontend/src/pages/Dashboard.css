@@ -202,6 +202,15 @@
   color: #6bcf7b;
 }
 
+/* Story Builder top actions */
+.story-builder-top-actions {
+  margin-bottom: 1.5rem;
+}
+
+.btn-new-musical {
+  font-size: 0.95rem;
+}
+
 /* My Musicals section (Story page) */
 .my-musicals {
   margin-bottom: 2rem;
@@ -223,9 +232,11 @@
 }
 
 .my-musical-card {
+  position: relative;
   display: block;
   text-align: left;
   padding: 0.85rem 1.15rem;
+  padding-right: 2.25rem;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -249,4 +260,38 @@
 
 .my-musical-card-title {
   font-weight: 500;
+}
+
+.my-musical-card-delete {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+}
+
+.my-musical-card:hover .my-musical-card-delete,
+.my-musical-card-delete:focus {
+  opacity: 1;
+}
+
+.my-musical-card-delete:hover {
+  color: #e88;
+  background: rgba(201, 74, 74, 0.12);
+}
+
+.my-musical-card-delete:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-gold);
 }
