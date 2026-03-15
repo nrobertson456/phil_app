@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-import { getMusicals, createMusical } from '../api';
+import { getMusicals } from '../api';
 import StoryBuilder from '../components/StoryBuilder';
 import CharacterCreator from '../components/CharacterCreator';
 import SongPlanner from '../components/SongPlanner';
@@ -24,13 +24,7 @@ export default function Dashboard() {
         if (!cancelled) {
           setMusicals(list);
           if (list.length > 0 && !currentMusicalId) setCurrentMusicalId(list[0].id);
-          else if (list.length === 0) {
-            const created = await createMusical({ title: '', premise: '', plot: '' });
-            if (!cancelled) {
-              setMusicals([{ id: created.id, title: '', premise: '', plot: '' }]);
-              setCurrentMusicalId(created.id);
-            }
-          }
+          // Don't auto-create when empty; user creates musicals by clicking Save on Story page
         }
       } catch (err) {
         if (err.message === 'Login required') logout();
@@ -86,7 +80,7 @@ export default function Dashboard() {
       </aside>
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<StoryBuilder musicalId={currentMusicalId} onMusicalUpdate={() => getMusicals().then(setMusicals)} />} />
+          <Route path="/" element={<StoryBuilder musicals={musicals} currentMusicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} onMusicalUpdate={() => getMusicals().then(setMusicals)} />} />
           <Route path="/characters" element={<CharacterCreator musicalId={currentMusicalId} />} />
           <Route path="/songs" element={<SongPlanner musicalId={currentMusicalId} />} />
           <Route path="/script" element={<ScriptSection musicalId={currentMusicalId} />} />

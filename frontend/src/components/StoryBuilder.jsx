@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { getMusical, updateMusical } from '../api';
+import { getMusical, createMusical } from '../api';
 
-export default function StoryBuilder({ musicalId, onMusicalUpdate }) {
+export default function StoryBuilder({ musicals = [], currentMusicalId: musicalId, onSelectMusical, onMusicalUpdate }) {
   const [title, setTitle] = useState('');
   const [premise, setPremise] = useState('');
   const [plot, setPlot] = useState('');
   const [saving, setSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!musicalId) return;
+    setLoaded(false);
     let cancelled = false;
     getMusical(musicalId).then((data) => {
       if (!cancelled) {
@@ -23,23 +25,46 @@ export default function StoryBuilder({ musicalId, onMusicalUpdate }) {
   }, [musicalId]);
 
   const save = async () => {
-    if (!musicalId) return;
     setSaving(true);
+    setSaveMessage(null);
     try {
-      await updateMusical(musicalId, { title, premise, plot });
-      onMusicalUpdate?.();
+      await createMusical({ title, premise, plot });
+      await onMusicalUpdate?.();
+      setTitle('');
+      setPremise('');
+      setPlot('');
+      onSelectMusical?.(null);
+      setSaveMessage('Saved! ✨');
+      setTimeout(() => setSaveMessage(null), 4000);
     } finally {
       setSaving(false);
     }
   };
 
-  if (!musicalId) return <div className="card">Select or create a musical to get started.</div>;
-  if (!loaded) return <div className="card">Loading story…</div>;
+  if (musicalId && !loaded) return <div className="card">Loading story…</div>;
 
   return (
     <div className="story-builder">
       <h1 className="page-title gold">Story Builder</h1>
       <p className="muted" style={{ marginBottom: '1.5rem' }}>Define your musical’s title, premise, and plot.</p>
+
+      {musicals.length > 0 && (
+        <section className="my-musicals" aria-label="My musicals">
+          <h2 className="my-musicals-title">My Musicals</h2>
+          <div className="my-musicals-grid">
+            {musicals.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                className={'my-musical-card' + (m.id === musicalId ? ' active' : '')}
+                onClick={() => onSelectMusical?.(m.id)}
+              >
+                <span className="my-musical-card-title">{m.title || 'Untitled Musical'}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="card">
         <label>Title</label>
@@ -48,14 +73,12 @@ export default function StoryBuilder({ musicalId, onMusicalUpdate }) {
           placeholder="e.g. The Phantom of the Opera"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          onBlur={save}
         />
         <label>Premise (one or two sentences)</label>
         <textarea
           placeholder="What is your musical about? Who is it for?"
           value={premise}
           onChange={(e) => setPremise(e.target.value)}
-          onBlur={save}
           rows={3}
         />
         <label>Plot (outline or full synopsis)</label>
@@ -63,10 +86,21 @@ export default function StoryBuilder({ musicalId, onMusicalUpdate }) {
           placeholder="Outline your story: acts, key scenes, turning points…"
           value={plot}
           onChange={(e) => setPlot(e.target.value)}
-          onBlur={save}
           rows={12}
         />
-        {saving && <span className="muted" style={{ fontSize: '0.85rem' }}>Saving…</span>}
+        <div className="story-builder-actions">
+          <button
+            type="button"
+            className="btn btn-gold"
+            onClick={save}
+            disabled={saving}
+          >
+            {saving ? 'Saving…' : 'Save'}
+          </button>
+          {saveMessage && (
+            <span className="save-confirmation save-confirmation-success" role="status">{saveMessage}</span>
+          )}
+        </div>
       </div>
     </div>
   );
