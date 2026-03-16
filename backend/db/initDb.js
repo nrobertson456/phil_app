@@ -18,5 +18,10 @@ export function initDb() {
   const db = getDb();
   const schema = readFileSync(join(__dirname, 'schema.sql'), 'utf-8');
   db.exec(schema);
+  try {
+    db.exec("ALTER TABLE users ADD COLUMN display_name TEXT DEFAULT ''");
+  } catch (e) {
+    if (!e.message?.includes('duplicate')) throw e;
+  }
   db.close();
 }

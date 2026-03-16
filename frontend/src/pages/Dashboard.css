@@ -69,9 +69,30 @@
   gap: 0.5rem;
 }
 
-.sidebar-email {
+.sidebar-profile-btn {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
   font-size: 0.8rem;
   color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.sidebar-profile-btn:hover,
+.sidebar-profile-btn.active {
+  color: var(--accent-gold);
+  background: rgba(201, 162, 39, 0.08);
+}
+
+.sidebar-profile-btn.active {
+  background: rgba(201, 162, 39, 0.12);
+}
+
+.sidebar-profile-email {
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
 }

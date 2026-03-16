@@ -1,0 +1,227 @@
+/* Profile page */
+.profile-page {
+  min-height: 100%;
+}
+
+/* Broadway silhouette banner: golden background, dancing figures */
+.profile-banner {
+  position: relative;
+  height: 140px;
+  margin: -2rem -2.5rem 2rem -2.5rem;
+  overflow: hidden;
+}
+
+.profile-banner-gold {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #b8923e 0%,
+    #d4a84b 25%,
+    #f2c76b 50%,
+    #d4a84b 75%,
+    #9a6b2e 100%
+  );
+  box-shadow: inset 0 2px 20px rgba(255, 236, 180, 0.4), inset 0 -2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.profile-notes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.profile-notes-layer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.profile-note {
+  position: absolute;
+  font-size: 26px;
+  color: #000;
+  opacity: 0;
+  transform-origin: center;
+  animation:
+    profile-note-float 11s ease-in-out infinite,
+    profile-note-spin 9s ease-in-out infinite,
+    profile-note-fade 11s ease-in-out infinite;
+  animation-delay: calc(var(--note-i) * -0.9s);
+}
+
+.profile-note[data-variant="1"] {
+  font-size: 30px;
+}
+
+.profile-note[data-variant="2"] {
+  font-size: 34px;
+}
+
+.profile-note[data-variant="3"] {
+  font-size: 24px;
+}
+
+.profile-note:nth-child(odd) {
+  animation-duration: 12s, 10s, 12s;
+}
+
+.profile-note:nth-child(even) {
+  animation-duration: 9s, 7.5s, 9s;
+}
+
+@keyframes profile-note-float {
+  0% {
+    transform: translate3d(-18px, 10px, 0);
+  }
+  25% {
+    transform: translate3d(-8px, -4px, 0);
+  }
+  50% {
+    transform: translate3d(0px, -10px, 0);
+  }
+  75% {
+    transform: translate3d(8px, -4px, 0);
+  }
+  100% {
+    transform: translate3d(18px, 10px, 0);
+  }
+}
+
+@keyframes profile-note-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes profile-note-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  15%,
+  70% {
+    opacity: 0.85;
+  }
+}
+
+.profile-content {
+  max-width: 420px;
+}
+
+.profile-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dim) 100%);
+  color: var(--bg-dark);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(242, 199, 107, 0.35);
+}
+
+.profile-name-form {
+  margin: 0 0 1rem;
+  text-align: left;
+}
+
+.profile-name-form label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.profile-name-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.profile-name-input {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.profile-name-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+.profile-name-display-row {
+  justify-content: space-between;
+}
+
+.profile-name-display {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.profile-name-edit-btn {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.profile-save-msg {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.profile-save-msg-ok {
+  color: #6bcf7b;
+}
+
+.profile-email {
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.profile-stats {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.profile-stats dt {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.profile-stats dd {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}

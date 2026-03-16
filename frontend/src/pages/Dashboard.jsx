@@ -7,6 +7,7 @@ import CharacterCreator from '../components/CharacterCreator';
 import SongPlanner from '../components/SongPlanner';
 import ScriptSection from '../components/ScriptSection';
 import AIAssistant from '../components/AIAssistant';
+import Profile from './Profile';
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -72,7 +73,9 @@ export default function Dashboard() {
           ))}
         </nav>
         <div className="sidebar-footer">
-          <span className="sidebar-email">{user?.email}</span>
+          <NavLink to="/profile" className={({ isActive }) => 'sidebar-profile-btn' + (isActive ? ' active' : '')} end title="View profile">
+            <span className="sidebar-profile-email">{user?.email}</span>
+          </NavLink>
           <button type="button" className="btn btn-ghost" onClick={() => { logout(); navigate('/login'); }}>
             Sign out
           </button>
@@ -85,6 +88,7 @@ export default function Dashboard() {
           <Route path="/songs" element={<SongPlanner musicals={musicals} musicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} />} />
           <Route path="/script" element={<ScriptSection musicals={musicals} musicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} />} />
           <Route path="/assistant" element={<AIAssistant musicals={musicals} musicalId={currentMusicalId} onSelectMusical={setCurrentMusicalId} />} />
+          <Route path="/profile" element={<Profile musicalCount={musicals.length} />} />
         </Routes>
       </main>
     </div>

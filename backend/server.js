@@ -15,6 +15,7 @@ import express from 'express';
 import cors from 'cors';
 import { initDb } from './db/initDb.js';
 import authRoutes from './routes/auth.js';
+import userRoutes from './routes/user.js';
 import musicalsRoutes from './routes/musicals.js';
 import charactersRoutes from './routes/characters.js';
 import songsRoutes from './routes/songs.js';
@@ -30,6 +31,7 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/musicals', musicalsRoutes);
 app.use('/api/characters', charactersRoutes);
 app.use('/api/songs', songsRoutes);

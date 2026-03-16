@@ -30,6 +30,13 @@ export async function login(email, password) {
   return api('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
 }
 
+export async function getProfile() {
+  return api('/user/me');
+}
+export async function updateProfile(data) {
+  return api('/user/me', { method: 'PATCH', body: JSON.stringify(data) });
+}
+
 // Musical (story)
 export async function getMusicals() {
   return api('/musicals');
