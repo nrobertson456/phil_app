@@ -22,19 +22,21 @@ RUN cd frontend && npm run build
 FROM node:20-alpine AS backend
 
 ENV NODE_ENV=production
-WORKDIR /app
+WORKDIR /app/backend
 
-# Install backend dependencies
-COPY backend/package.json backend/package-lock.json* ./backend/
-RUN cd backend && npm install --omit=dev
+# Install build tools so better-sqlite3 can compile on Linux
+RUN apk add --no-cache python3 make g++
 
-# Copy backend source
-COPY backend ./backend
+# Install backend dependencies (Linux-native)
+COPY backend/package.json backend/package-lock.json* ./
+RUN npm install --omit=dev
+
+# Copy backend source (without node_modules) and rebuild better-sqlite3 from source
+COPY backend . 
+RUN npm rebuild better-sqlite3 --build-from-source
 
 # Copy built frontend into the image so the backend can serve it
-COPY --from=frontend-build /app/frontend/dist ./frontend/dist
-
-WORKDIR /app/backend
+COPY --from=frontend-build /app/frontend/dist ../frontend/dist
 
 # Railway will inject PORT; default to 3001 like server.js
 ENV PORT=3001
