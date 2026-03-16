@@ -7,6 +7,7 @@ const SUGGEST_TYPES = [
   { value: 'character', label: 'Character depth' },
   { value: 'song', label: 'Song idea' },
   { value: 'dialogue', label: 'Dialogue / line' },
+  { value: 'other', label: 'Other / Ask Anything' },
 ];
 
 export default function AIAssistant({ musicals = [], musicalId, onSelectMusical }) {

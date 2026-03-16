@@ -67,6 +67,7 @@ function buildPrompt(context, type, musicalContext) {
     character: 'Suggest a character trait, motivation, or line that would deepen this character. Be brief.',
     song: 'Suggest a song idea (title or moment) that could fit. Be brief.',
     dialogue: 'Suggest a line of dialogue or a reaction. Be brief.',
+    other: 'This is a free-form question. Answer it directly and helpfully, even if it is not about musicals. Keep it concise.',
   }[type] || 'Give me one short creative idea to unstick my writing.';
   return `${base}\n\n${typePrompt}`;
 }
