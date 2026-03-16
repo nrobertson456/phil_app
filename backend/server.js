@@ -8,9 +8,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.join(__dirname, '.env') });
 import express from 'express';
 import cors from 'cors';
 import { initDb } from './db/initDb.js';
@@ -23,6 +20,9 @@ import scriptRoutes from './routes/script.js';
 import aiRoutes from './routes/ai.js';
 
 initDb();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -40,6 +40,15 @@ app.use('/api/ai', aiRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, message: 'Broadway App API' });
+});
+
+// Serve built frontend (SPA) in production
+const frontendDist = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendDist));
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  res.sendFile(path.join(frontendDist, 'index.html'));
 });
 
 app.listen(PORT, () => {
