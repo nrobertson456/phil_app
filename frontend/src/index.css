@@ -69,25 +69,9 @@ body::after {
       #7b1f32 78%,
       #3b0c16 100%
     ),
-    /* golden rope tying the curtain back at mid-height */
-    linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 38%,
-      rgba(242, 199, 107, 0.0) 40%,
-      rgba(242, 199, 107, 0.95) 41%,
-      #c79c4a 43%,
-      rgba(242, 199, 107, 0.95) 45%,
-      rgba(242, 199, 107, 0.0) 47%,
-      transparent 100%
-    ),
-    /* tassel glow */
-    radial-gradient(circle at 68% 50%, rgba(0, 0, 0, 0.7) 0, transparent 55%),
-    radial-gradient(circle at 70% 50%, #fce7a9 0, #f2c76b 32%, #c79c4a 55%, transparent 62%),
     /* soft shadow edge toward the center of the stage */
     radial-gradient(circle at 100% 50%, rgba(0, 0, 0, 0.65), transparent 55%);
-  /* first layer (velvet folds) stretches to always fill the curtain panel */
-  background-size: 100% 100%, 4px 100%, 80px 90%, 90px 90%, 140px 100%;
+  background-size: 100% 100%, 140px 100%;
   background-repeat: no-repeat;
   box-shadow:
     0 0 30px rgba(0, 0, 0, 0.85),
@@ -118,20 +102,8 @@ body::after {
       #7b1f32 78%,
       #3b0c16 100%
     ),
-    linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 38%,
-      rgba(242, 199, 107, 0.0) 40%,
-      rgba(242, 199, 107, 0.95) 41%,
-      #c79c4a 43%,
-      rgba(242, 199, 107, 0.95) 45%,
-      rgba(242, 199, 107, 0.0) 47%,
-      transparent 100%
-    ),
-    radial-gradient(circle at 32% 50%, rgba(0, 0, 0, 0.7) 0, transparent 55%),
-    radial-gradient(circle at 30% 50%, #fce7a9 0, #f2c76b 32%, #c79c4a 55%, transparent 62%),
     radial-gradient(circle at 0% 50%, rgba(0, 0, 0, 0.65), transparent 55%);
+  background-size: 100% 100%, 140px 100%;
   animation-name: curtain-open-right;
 }
 
@@ -164,7 +136,6 @@ body::after {
     width: 120px;   /* final resting width */
   }
 }
-
 
 h1, h2, h3 {
   font-family: var(--font-display);
