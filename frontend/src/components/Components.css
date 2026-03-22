@@ -5,6 +5,29 @@
   font-size: 1.75rem;
 }
 
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.4rem;
+    line-height: 1.25;
+  }
+
+  .character-name-input {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .song-act-input,
+  .song-scene-input {
+    width: 4rem !important;
+    min-width: 0;
+  }
+
+  .script-textarea {
+    min-height: 260px;
+    padding: 0.85rem 1rem;
+  }
+}
+
 .character-list,
 .song-list {
   list-style: none;

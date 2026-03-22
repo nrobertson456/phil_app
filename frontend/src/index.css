@@ -1,5 +1,9 @@
 /* Anastasia-inspired theme: deep navy, rich red, shimmering gold */
 :root {
+  /* Stage curtains — narrow on small screens so content + sidebar fit */
+  --curtain-width: 120px;
+  --curtain-overshoot: 10px;
+
   /* Core palette */
   --bg-dark: #05091a;            /* deep midnight navy */
   --bg-dark-alt: #0b1430;        /* slightly lighter navy for gradients */
@@ -43,8 +47,9 @@ body {
   min-height: 100vh;
   position: relative;
   z-index: 1; /* sit above stage curtains */
-  max-width: calc(100% - 240px); /* leave room for curtains on both sides */
+  max-width: calc(100% - 2 * var(--curtain-width));
   margin: 0 auto;
+  width: 100%;
 }
 
 /* Luxurious red velvet theatre curtains framing the stage */
@@ -54,7 +59,7 @@ body::after {
   position: fixed;
   top: 0;
   bottom: 0;
-  width: 120px; /* final resting width after animation */
+  width: var(--curtain-width); /* final resting width after animation */
   pointer-events: none;
   z-index: 4; /* above app content but non-interactive */
   background-image:
@@ -114,11 +119,11 @@ body::after {
   }
   70% {
     left: 0;
-    width: 130px;   /* overshoot slightly for drama */
+    width: calc(var(--curtain-width) + var(--curtain-overshoot)); /* overshoot for drama */
   }
   100% {
     left: 0;
-    width: 120px;   /* final resting width */
+    width: var(--curtain-width);
   }
 }
 
@@ -129,11 +134,26 @@ body::after {
   }
   70% {
     right: 0;
-    width: 130px;   /* overshoot slightly for drama */
+    width: calc(var(--curtain-width) + var(--curtain-overshoot));
   }
   100% {
     right: 0;
-    width: 120px;   /* final resting width */
+    width: var(--curtain-width);
+  }
+}
+
+/* Phones / small tablets: slim curtains, more stage space */
+@media (max-width: 768px) {
+  :root {
+    --curtain-width: 28px;
+    --curtain-overshoot: 6px;
+  }
+}
+
+/* Very small phones: minimal frame */
+@media (max-width: 380px) {
+  :root {
+    --curtain-width: 20px;
   }
 }
 
@@ -146,6 +166,11 @@ h1, h2, h3 {
 h1 { font-size: 1.75rem; color: var(--accent-gold); }
 h2 { font-size: 1.35rem; color: var(--accent-gold-dim); }
 h3 { font-size: 1.1rem; }
+
+@media (max-width: 768px) {
+  h1 { font-size: 1.45rem; }
+  h2 { font-size: 1.2rem; }
+}
 
 a {
   color: var(--accent-gold-bright);
