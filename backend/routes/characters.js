@@ -36,7 +36,8 @@ router.post('/', (req, res) => {
   }
   const result = db.prepare('INSERT INTO characters (musical_id, name, description, role) VALUES (?, ?, ?, ?)').run(musical_id, name, description, role);
   db.close();
-  res.status(201).json({ id: result.lastInsertRowid, musical_id, name, description, role });
+  const id = Number(result.lastInsertRowid);
+  res.status(201).json({ id, musical_id, name, description, role });
 });
 
 // Update character

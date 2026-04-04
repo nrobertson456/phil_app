@@ -34,7 +34,8 @@ router.post('/', (req, res) => {
   }
   const result = db.prepare('INSERT INTO songs (musical_id, title, act_number, scene_number, notes) VALUES (?, ?, ?, ?, ?)').run(musical_id, title, act_number, scene_number, notes);
   db.close();
-  res.status(201).json({ id: result.lastInsertRowid, musical_id, title, act_number, scene_number, notes });
+  const id = Number(result.lastInsertRowid);
+  res.status(201).json({ id, musical_id, title, act_number, scene_number, notes });
 });
 
 router.put('/:id', (req, res) => {

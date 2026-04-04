@@ -29,7 +29,14 @@ export default function AIAssistant({ musicals = [], musicalId, onSelectMusical 
       const { suggestion: text } = await getAISuggestion(context, type, musicalContext);
       setSuggestion(text);
     } catch (err) {
-      setSuggestion('Could not get a suggestion. Check that the backend is running and, if you use AI, that OPENAI_API_KEY is set.');
+      const msg = err?.message || '';
+      if (msg === 'Login required' || msg.includes('Invalid or expired')) {
+        setSuggestion('Your session expired. Please sign out and sign in again, then try the AI Assistant.');
+      } else if (msg) {
+        setSuggestion(`Could not get a suggestion: ${msg}`);
+      } else {
+        setSuggestion('Could not get a suggestion. Check that the backend is running and that OPENAI_API_KEY is set on the server (Railway variables or backend .env).');
+      }
     } finally {
       setLoading(false);
     }

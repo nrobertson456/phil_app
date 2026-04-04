@@ -7,7 +7,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getDb } from '../db/initDb.js';
-import { JWT_SECRET } from '../middleware/auth.js';
+import { jwtSecret } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ router.post('/register', (req, res) => {
 
   // better-sqlite3 returns lastInsertRowid as a BigInt; convert to a normal number
   const userId = Number(result.lastInsertRowid);
-  const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
+  const token = jwt.sign({ userId }, jwtSecret(), { expiresIn: '7d' });
   res.json({ token, userId, email });
 });
 
@@ -43,7 +43,7 @@ router.post('/login', (req, res) => {
   if (!user || !bcrypt.compareSync(password, user.password_hash)) {
     return res.status(401).json({ error: 'Invalid email or password' });
   }
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
+  const token = jwt.sign({ userId: user.id }, jwtSecret(), { expiresIn: '7d' });
   res.json({ token, userId: user.id, email });
 });
 

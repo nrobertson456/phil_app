@@ -12,7 +12,9 @@ router.post('/suggest', async (req, res) => {
   const { context, type, musicalContext } = req.body || {};
   // type: 'plot', 'character', 'song', 'dialogue', etc.
   // musicalContext: optional { title, premise, plot } for show-specific advice
-  const openaiKey = process.env.OPENAI_API_KEY;
+  const openaiKey = typeof process.env.OPENAI_API_KEY === 'string'
+    ? process.env.OPENAI_API_KEY.trim()
+    : '';
 
   if (!openaiKey) {
     return res.json({
@@ -41,7 +43,14 @@ router.post('/suggest', async (req, res) => {
         max_tokens: 400,
       }),
     });
-    const data = await response.json();
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const msg = data?.error?.message || response.statusText || 'Unknown error';
+      return res.json({
+        suggestion: `OpenAI returned an error (${response.status}): ${msg}`,
+        fromAi: false,
+      });
+    }
     const suggestion = data.choices?.[0]?.message?.content?.trim() || 'No suggestion this time. Try rephrasing or adding more context.';
     res.json({ suggestion, fromAi: true });
   } catch (err) {

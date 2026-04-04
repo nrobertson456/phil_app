@@ -40,7 +40,8 @@ router.post('/', (req, res) => {
   }
   const result = db.prepare('INSERT INTO script_sections (musical_id, section_title, content, sort_order) VALUES (?, ?, ?, 0)').run(musical_id, section_title, content);
   db.close();
-  res.status(201).json({ id: result.lastInsertRowid, section_title, content });
+  const id = Number(result.lastInsertRowid);
+  res.status(201).json({ id, section_title, content });
 });
 
 router.put('/:id', (req, res) => {

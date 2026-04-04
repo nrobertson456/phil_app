@@ -20,10 +20,10 @@ import scriptRoutes from './routes/script.js';
 import aiRoutes from './routes/ai.js';
 import inspirationRoutes from './routes/inspiration.js';
 
-initDb();
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, '.env') });
+
+initDb();
 
 const app = express();
 const PORT = process.env.PORT || 3001;

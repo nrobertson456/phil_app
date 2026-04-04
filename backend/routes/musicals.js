@@ -32,7 +32,8 @@ router.post('/', (req, res) => {
   const db = getDb();
   const result = db.prepare('INSERT INTO musicals (user_id, title, premise, plot) VALUES (?, ?, ?, ?)').run(req.userId, title, premise, plot);
   db.close();
-  res.status(201).json({ id: result.lastInsertRowid, title, premise, plot });
+  const id = Number(result.lastInsertRowid);
+  res.status(201).json({ id, title, premise, plot });
 });
 
 // Update musical (story builder)

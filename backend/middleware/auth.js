@@ -4,7 +4,10 @@
  */
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+/** Read at request time so `dotenv.config()` in server.js runs before any auth runs. */
+export function jwtSecret() {
+  return process.env.JWT_SECRET || 'dev-secret-change-in-production';
+}
 
 export function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -13,12 +16,10 @@ export function requireAuth(req, res, next) {
   }
   const token = authHeader.slice(7);
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, jwtSecret());
     req.userId = decoded.userId;
     next();
   } catch {
     return res.status(401).json({ error: 'Invalid or expired token' });
   }
 }
-
-export { JWT_SECRET };
