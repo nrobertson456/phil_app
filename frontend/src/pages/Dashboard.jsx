@@ -7,6 +7,7 @@ import CharacterCreator from '../components/CharacterCreator';
 import SongPlanner from '../components/SongPlanner';
 import ScriptSection from '../components/ScriptSection';
 import AIAssistant from '../components/AIAssistant';
+import InspirationSidebar from '../components/InspirationSidebar';
 import Profile from './Profile';
 import './Dashboard.css';
 
@@ -142,6 +143,7 @@ export default function Dashboard() {
             </NavLink>
           ))}
         </nav>
+        <InspirationSidebar />
         <div className="sidebar-footer">
           <NavLink
             to="/profile"

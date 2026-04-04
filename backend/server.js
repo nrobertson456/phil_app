@@ -18,6 +18,7 @@ import charactersRoutes from './routes/characters.js';
 import songsRoutes from './routes/songs.js';
 import scriptRoutes from './routes/script.js';
 import aiRoutes from './routes/ai.js';
+import inspirationRoutes from './routes/inspiration.js';
 
 initDb();
 
@@ -37,6 +38,7 @@ app.use('/api/characters', charactersRoutes);
 app.use('/api/songs', songsRoutes);
 app.use('/api/script', scriptRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/inspiration', inspirationRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, message: 'Broadway App API' });

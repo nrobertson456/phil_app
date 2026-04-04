@@ -99,3 +99,13 @@ export async function getAISuggestion(context, type, musicalContext = null) {
   if (musicalContext && typeof musicalContext === 'object') body.musicalContext = musicalContext;
   return api('/ai/suggest', { method: 'POST', body: JSON.stringify(body) });
 }
+
+// Inspiration (Broadway-themed photos via Wikipedia/Wikimedia)
+export async function getInspirationGallery() {
+  return api('/inspiration/gallery');
+}
+
+export async function searchInspiration(term) {
+  const url = term ? `/inspiration/search?term=${encodeURIComponent(term)}` : '/inspiration/search?term=';
+  return api(url);
+}
